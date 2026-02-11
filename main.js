@@ -133,7 +133,7 @@ const UI = {
             yesBtn.style.opacity = '0.3';
             yesBtn.style.cursor = 'not-allowed';
             yesBtn.style.pointerEvents = 'auto'; // Keep clickable for event listener
-            yesBtn.innerText = 'YES! 😍 (Try NO first)';
+            yesBtn.innerText = 'YES! 😍';
         }
     },
 
