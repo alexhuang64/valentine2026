@@ -24,14 +24,18 @@ const AudioController = {
             this.ctx.resume();
         }
 
+
         // Auto-play music on FIRST interaction anywhere on the page
-        const unlockAudio = () => {
+        const unlockAudio = (e) => {
+            // Don't interfere with scrolling on the letter
+            if (e.target.closest('.letter-content')) return;
+
             this.playMusic();
             document.removeEventListener('click', unlockAudio);
             document.removeEventListener('touchstart', unlockAudio);
         };
         document.addEventListener('click', unlockAudio);
-        document.addEventListener('touchstart', unlockAudio);
+        document.addEventListener('touchstart', unlockAudio, { passive: true });
     },
 
     playTone(freq, type, duration, vol = 0.2) {

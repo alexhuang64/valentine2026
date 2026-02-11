@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Test Scroll</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Dancing Script', cursive;
+            background: linear-gradient(135deg, #2e001f 0%, #680026 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 500px;
+            width: 100%;
+
+            /* KEY: Fixed height with scroll */
+            height: 300px;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .content {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #e31b6d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>Test Cuộn 📜</h1>
+            <p>Như Ý yêu ơi,</p>
+            <br>
+            <p>Trong nghệ thuật viết chữ Trung, đôi khi chính những nét xước, những vết loang lại tạo nên linh hồn cho
+                một tác phẩm trưởng thành. Việc lỡ hẹn với tấm visa du học lần này là một 'vết sẹo' đau đớn trong bản kế
+                hoạch của anh, nhưng nó cũng giúp anh hiểu một điều: rằng điều quý giá nhất anh đang có không phải là
+                một kế hoạch hoàn hảo mà là sự đồng hành nhu hòa cùng em suốt 3 năm qua.</p>
+            <br>
+            <p>Anh nợ em một hành trình rực rỡ dưới nắng ấm, và anh hứa sẽ dùng cả sự quyết tâm của mình để trả lại em
+                vào một ngày không xa. Đừng buồn vì một cánh cửa chưa hẳn hoàn toàn đóng lại, bởi trái tim anh vẫn luôn
+                mở rộng để đón em vào, ấm áp và vẹn nguyên hơn bao giờ hết. Valentine này, hãy để anh được chăm sóc em,
+                được là người đàn ông xứng đáng với tình yêu chân thành của em.</p>
+            <br>
+            <p>Như Ý à, be my valentine ?...</p>
+            <br>
+            <p style="color: red; font-weight: bold;">⬆️ NẾU BẠN THẤY DÒNG CHỮ NÀY THÌ CUỘN THÀNH CÔNG! ⬆️</p>
+        </div>
+    </div>
+</body>
+
+</html>
