@@ -276,15 +276,23 @@
         <h1>Our Memories 📸</h1>
         <p>Every moment with you is a treasure.</p>
         <div class="gallery-grid">
-            <!-- Replace these sources with your actual image URLs -->
-            <div class="photo-card"><img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400"
-                    alt="Memory 1"></div>
-            <div class="photo-card"><img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=400"
-                    alt="Memory 2"></div>
-            <div class="photo-card"><img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400"
-                    alt="Memory 3"></div>
-            <div class="photo-card"><img src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=400"
-                    alt="Memory 4"></div>
+            <!-- Local Images (anh1.jpg - anh4.jpg) -->
+            <div class="photo-card" onclick="playClickSound()">
+                <img src="anh1.jpg?v=2" alt="Kỷ niệm 1"
+                    onerror="this.src='https://images.unsplash.com/photo-1544124339-42b6b553e162?w=500&q=80'">
+            </div>
+            <div class="photo-card" onclick="playClickSound()">
+                <img src="anh2.jpg?v=2" alt="Kỷ niệm 2"
+                    onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500&q=80'">
+            </div>
+            <div class="photo-card" onclick="playClickSound()">
+                <img src="anh3.jpg?v=2" alt="Kỷ niệm 3"
+                    onerror="this.src='https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=500&q=80'">
+            </div>
+            <div class="photo-card" onclick="playClickSound()">
+                <img src="anh4.jpg?v=2" alt="Kỷ niệm 4"
+                    onerror="this.src='https://images.unsplash.com/photo-1520854221256-17451cc330e7?w=500&q=80'">
+            </div>
         </div>
         <button class="btn" onclick="nextScreen('screen-letter')">Next -></button>
     </div>
@@ -315,22 +323,145 @@
         <img src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif" alt="Celebration"
             style="width: 100%; border-radius: 10px; margin-bottom: 20px;">
         <p>I love you so much! Can't wait for our date! 🥰</p>
+
+        <!-- Date & Location Details -->
+        <div
+            style="background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 15px; margin-top: 15px; border: 1px solid rgba(255, 255, 255, 0.2); text-align: left;">
+            <h3
+                style="color: var(--secondary-color); margin-bottom: 15px; font-family: 'Parisienne', cursive; font-size: 2rem; text-align: center;">
+                Chi tiết buổi hẹn 🥂</h3>
+            <p style="margin-bottom: 10px; font-size: 1.1rem; color: #fff;"><strong>📅 Thời gian:</strong> 18:30,
+                13/02/2026</p>
+            <p style="margin-bottom: 0; font-size: 1.1rem; color: #fff;"><strong>📍 Địa điểm:</strong> P'ti
+                Saigon<br><span style="font-size: 0.9em; opacity: 0.9;">52 Ngô Quang Huy, P.Thảo Điền</span></p>
+        </div>
     </div>
 
     <!-- Audio -->
+    <!-- Audio -->
     <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3" type="audio/mp3">
+        <source src="./music.mp3?v=2" type="audio/mp3">
     </audio>
+
     <div class="music-control" onclick="toggleMusic()">🎵</div>
 
     <script>
         /* --- CONFIGURATION --- */
         // ACTION: Replace with your actual email to receive the notification
-        const YOUR_EMAIL = "demo@gmail.com";
+        const YOUR_EMAIL = "phamlong101993@gmail.com";
 
         // ACTION: Customize your love letter here
-        const loveLetterText = "Dearest Love,\n\nFrom the moment I met you, my world has been brighter. Your smile is my favorite sight, and your laughter is my favorite sound.\n\nI cherish every moment we share, and I want to create a million more memories with you.\n\nSo, I have a very important question...";
+        const loveLetterText = `Như Ý yêu ơi,
+
+Trong nghệ thuật viết chữ Trung, đôi khi chính những nét xước, những vết loang lại tạo nên linh hồn cho một tác phẩm trưởng thành. Việc lỡ hẹn với tấm visa du học lần này là một 'vết sẹo' đau đớn trong bản kế hoạch của anh, nhưng nó cũng giúp anh hiểu một điều: rằng điều quý giá nhất anh đang có không phải là một kế hoạch hoàn hảo mà là sự đồng hành nhu hòa cùng em suốt 3 năm qua.
+
+Anh nợ em một hành trình rực rỡ dưới nắng ấm, và anh hứa sẽ dùng cả sự quyết tâm của mình để trả lại em vào một ngày không xa. Đừng buồn vì một cánh cửa chưa hẳn hoàn toàn đóng lại, bởi trái tim anh vẫn luôn mở rộng để đón em vào, ấm áp và vẹn nguyên hơn bao giờ hết. Valentine này, hãy để anh được chăm sóc em, được là người đàn ông xứng đáng với tình yêu chân thành của em.
+
+Như Ý à, be my valentine ?...`;
         /* --------------------- */
+
+        // --- DEBUG CONSOLE (To help you see what is missing) ---
+        function logError(msg) {
+            console.error(msg);
+            // Optional: Uncomment to see errors on screen
+            // alert(msg); 
+        }
+
+        // --- ROBUST AUDIO SYSTEM ---
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+
+        const SynthSound = {
+            init: function () {
+                if (!audioCtx) audioCtx = new AudioContext();
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+            },
+            playTone: function (freq, type, duration, vol = 0.5) {
+                this.init();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            },
+            click: function () {
+                this.playTone(800, 'sine', 0.1, 0.2);
+                if (navigator.vibrate) navigator.vibrate(10);
+            },
+            pop: function () {
+                this.init();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.1);
+            },
+            swoosh: function () {
+                this.playTone(200, 'triangle', 0.3, 0.1);
+            },
+            success: function () {
+                const now = audioCtx.currentTime;
+                [440, 554, 659, 880].forEach((freq, i) => {
+                    setTimeout(() => this.playTone(freq, 'sine', 0.6, 0.1), i * 100);
+                });
+            }
+        };
+
+        function playClickSound() { SynthSound.click(); }
+        function playSwooshSound() { SynthSound.swoosh(); }
+        function playSuccessSound() { SynthSound.success(); }
+        function playPopSound() { SynthSound.pop(); }
+
+        // 2. YouTube Background Music integration
+        var player;
+        var isMusicPlaying = false;
+
+        // Load YouTube IFrame API asynchronously
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // Music Control (Local File)
+        // Ensure you have a 'music.mp3' file in the same folder or update the src in the <audio> tag
+        // const music = document.getElementById('bgMusic'); // Variable already declared above
+        // let isMusicPlaying = false; // Variable already declared above
+
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                music.pause();
+                isMusicPlaying = false;
+                document.querySelector('.music-control').style.opacity = "0.5";
+            } else {
+                playMusic();
+            }
+        }
+
+        function playMusic() {
+            // Called on first user interaction or toggle
+            if (!isMusicPlaying) {
+                music.play().then(() => {
+                    isMusicPlaying = true;
+                    document.querySelector('.music-control').style.opacity = "1";
+                    SynthSound.init(); // Also wake up audio context
+                }).catch(e => console.log("Auto-play blocked/File not found", e));
+            }
+        }
+
+        /* --- EXISTING LOGIC --- */
+        // Particle System
 
         // Particle System
         function createParticles() {
@@ -350,11 +481,13 @@
 
         // Screen Navigation
         function nextScreen(targetId) {
+            playSwooshSound();
             document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
             const target = document.getElementById(targetId);
             target.classList.add('active');
 
-            if (targetId === 'screen-intro') {
+            // Play music automatically when user enters the gallery (first interaction)
+            if (targetId === 'screen-gallery') {
                 playMusic();
             }
             if (targetId === 'screen-letter') {
@@ -362,25 +495,37 @@
             }
         }
 
-        // Music Control
+        // --- SIMPLIFIED MUSIC CONTROL ---
         const music = document.getElementById('bgMusic');
-        let isPlaying = false;
+        let isMusicPlaying = false;
 
         function toggleMusic() {
-            if (isPlaying) {
+            if (isMusicPlaying) {
                 music.pause();
-                isPlaying = false;
+                isMusicPlaying = false;
+                document.querySelector('.music-control').style.opacity = "0.5";
             } else {
-                music.play();
-                isPlaying = true;
+                music.play().then(() => {
+                    isMusicPlaying = true;
+                    document.querySelector('.music-control').style.opacity = "1";
+                    // Initialize audio context for SFX if not already done
+                    SynthSound.init();
+                }).catch(e => {
+                    logError("Music play failed: " + e.message);
+                    alert("Không thể tự động phát nhạc. Bạn hãy bấm vào nút 🎵 ở góc màn hình nhé!");
+                });
             }
         }
 
         function playMusic() {
-            if (!isPlaying) {
+            if (!isMusicPlaying) {
                 music.play().then(() => {
-                    isPlaying = true;
-                }).catch(e => console.log("Auto-play blocked"));
+                    isMusicPlaying = true;
+                    document.querySelector('.music-control').style.opacity = "1";
+                    SynthSound.init();
+                }).catch(e => {
+                    logError("Auto-play blocked: " + e.message);
+                });
             }
         }
 
@@ -402,14 +547,17 @@
             } else {
                 // Show next button after typing is done
                 const btn = document.getElementById('letter-next-btn');
-                btn.style.opacity = '1';
-                btn.style.pointerEvents = 'auto';
+                if (btn) {
+                    btn.style.opacity = '1';
+                    btn.style.pointerEvents = 'auto';
+                }
             }
         }
 
         // "No" Button Interaction
         let dodgeCount = 0;
         function dodgeButton() {
+            playPopSound();
             const btn = document.getElementById('noBtn');
             const phrases = [
                 "No 😢", "Are you sure?", "Really?", "Think again!",
@@ -421,9 +569,13 @@
             const x = Math.random() * (window.innerWidth - 200);
             const y = Math.random() * (window.innerHeight - 100);
 
+            // Ensure button doesn't go off screen
+            const safeX = Math.max(10, Math.min(x, window.innerWidth - 150));
+            const safeY = Math.max(10, Math.min(y, window.innerHeight - 50));
+
             btn.style.position = 'fixed';
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
+            btn.style.left = safeX + 'px';
+            btn.style.top = safeY + 'px';
 
             // Change text
             btn.innerText = phrases[dodgeCount % phrases.length];
@@ -432,6 +584,7 @@
 
         // "Yes" Action & Email Notification
         function acceptProposal() {
+            playSuccessSound();
             // 1. Show celebration immediately
             nextScreen('screen-celebration');
             triggerConfetti();
