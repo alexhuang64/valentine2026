@@ -126,6 +126,11 @@ const UI = {
         const btn = document.getElementById('noBtn');
         const container = document.getElementById('screen-proposal');
 
+        // Move button to container if not already there to ensure 'absolute' positioning works relative to container
+        if (btn.parentNode !== container) {
+            container.appendChild(btn);
+        }
+
         const phrases = [
             "No 😢",
             "Are you sure?",
@@ -147,33 +152,32 @@ const UI = {
             "Bấm YES đi mòa 💖"
         ];
 
-        // 1. Change text
+        // Change text
         btn.innerText = phrases[Math.floor(Math.random() * phrases.length)];
 
-        // 2. Get dimensions
-        const btnRect = btn.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
+        // Get limits relative to container
+        const containerWidth = container.clientWidth;
+        const containerHeight = container.clientHeight;
+        const btnWidth = btn.offsetWidth;
+        const btnHeight = btn.offsetHeight;
 
-        const btnWidth = btnRect.width;
-        const btnHeight = btnRect.height;
+        // Internal padding to keep it away from edges
+        const padding = 20;
 
-        // 3. Define Constraints within the Container
-        // Use container's position as the boundaries
-        const padding = 20; // Internal padding
+        const maxLeft = containerWidth - btnWidth - padding;
+        const maxTop = containerHeight - btnHeight - padding;
 
-        const minX = containerRect.left + padding;
-        const maxX = containerRect.right - btnWidth - padding;
-        const minY = containerRect.top + padding;
-        const maxY = containerRect.bottom - btnHeight - padding;
+        const randomLeft = Math.max(padding, Math.random() * maxLeft);
+        const randomTop = Math.max(padding, Math.random() * maxTop);
 
-        // 4. Calculate Random Position strictly within these bounds
-        const randomX = Math.random() * (maxX - minX) + minX;
-        const randomY = Math.random() * (maxY - minY) + minY;
+        // Apply style
+        btn.style.position = 'absolute';
+        btn.style.left = randomLeft + 'px';
+        btn.style.top = randomTop + 'px';
 
-        // 5. Apply new position
-        btn.style.position = 'fixed'; // Keep fixed to ignore flow, but positioned visually inside container
-        btn.style.left = randomX + 'px';
-        btn.style.top = randomY + 'px';
+        // Reset transform if any (remove centering hacks if they existed)
+        btn.style.transform = 'none';
+        btn.style.margin = '0';
     },
 
     acceptProposal() {
