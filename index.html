@@ -268,9 +268,31 @@
             gap: 20px;
         }
 
+        /* YES button starts TINY */
+        #yesBtn {
+            transform: scale(0.5);
+            transition: transform 0.3s ease;
+        }
+
+        /* NO button starts BIG and attractive */
         #noBtn {
-            background: #4a4a4a;
+            background: linear-gradient(45deg, #4a4a4a, #6a6a6a);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform: scale(1.2);
+            font-weight: bold;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1.2);
+            }
+
+            50% {
+                transform: scale(1.25);
+            }
         }
 
         /* Music Control */
