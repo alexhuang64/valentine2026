@@ -125,7 +125,14 @@ const UI = {
         }
     },
 
-    dodgeButton() {
+
+    dodgeButton(event) {
+        // Prevent default touch/mouse behavior
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
         AudioController.playPop();
         const btn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
@@ -296,9 +303,31 @@ function sendEmail() {
 createParticles();
 AudioController.init(); // Initialize audio context and interaction listeners immediately
 
+// Add event listeners for No button
+document.addEventListener('DOMContentLoaded', () => {
+    const noBtn = document.getElementById('noBtn');
+    if (noBtn) {
+        // Desktop: mouseover
+        noBtn.addEventListener('mouseover', (e) => {
+            UI.dodgeButton(e);
+        });
+
+        // Mobile: touchstart (with passive:false to allow preventDefault)
+        noBtn.addEventListener('touchstart', (e) => {
+            UI.dodgeButton(e);
+        }, { passive: false });
+
+        // Prevent click on No button from doing anything
+        noBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    }
+});
+
 // Global Accessors for HTML onclick events
 window.playClickSound = () => AudioController.playClick();
 window.nextScreen = (id) => UI.nextScreen(id);
 window.toggleMusic = () => AudioController.toggleMusic();
-window.dodgeButton = () => UI.dodgeButton();
+window.dodgeButton = (e) => UI.dodgeButton(e);
 window.acceptProposal = () => UI.acceptProposal();
