@@ -145,13 +145,17 @@ const UI = {
             "Bấm YES đi mòa 💖"
         ];
 
-        // Random Position (Erratic)
-        const x = Math.max(10, Math.min(Math.random() * (window.innerWidth - 120), window.innerWidth - 120));
-        const y = Math.max(10, Math.min(Math.random() * (window.innerHeight - 50), window.innerHeight - 50));
+        // Calculate limits to stay within screen (with 50px padding)
+        const maxX = window.innerWidth - btn.offsetWidth - 50;
+        const maxY = window.innerHeight - btn.offsetHeight - 50;
+
+        // Ensure button stays on screen even if window serves odd sizes
+        const randomX = Math.max(20, Math.random() * maxX);
+        const randomY = Math.max(20, Math.random() * maxY);
 
         btn.style.position = 'fixed';
-        btn.style.left = x + 'px';
-        btn.style.top = y + 'px';
+        btn.style.left = randomX + 'px';
+        btn.style.top = randomY + 'px';
 
         // Change text randomly (to avoid repetition)
         btn.innerText = phrases[Math.floor(Math.random() * phrases.length)];
