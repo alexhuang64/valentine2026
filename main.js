@@ -124,9 +124,10 @@ const UI = {
     dodgeButton() {
         AudioController.playPop();
         const btn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
         const container = document.getElementById('screen-proposal');
 
-        // Move button to container if not already there to ensure 'absolute' positioning works relative to container
+        // Move button to container if not already there
         if (btn.parentNode !== container) {
             container.appendChild(btn);
         }
@@ -160,24 +161,41 @@ const UI = {
         const containerHeight = container.clientHeight;
         const btnWidth = btn.offsetWidth;
         const btnHeight = btn.offsetHeight;
-
-        // Internal padding to keep it away from edges
         const padding = 20;
 
         const maxLeft = containerWidth - btnWidth - padding;
         const maxTop = containerHeight - btnHeight - padding;
 
-        const randomLeft = Math.max(padding, Math.random() * maxLeft);
-        const randomTop = Math.max(padding, Math.random() * maxTop);
+        let currentLeft = parseFloat(btn.style.left) || 0;
+        let currentTop = parseFloat(btn.style.top) || 0;
+        let newLeft, newTop;
+        let distance = 0;
+
+        // Try to find a position at least 50px away
+        let attempts = 0;
+        do {
+            newLeft = Math.max(padding, Math.random() * maxLeft);
+            newTop = Math.max(padding, Math.random() * maxTop);
+
+            const dx = newLeft - currentLeft;
+            const dy = newTop - currentTop;
+            distance = Math.sqrt(dx * dx + dy * dy);
+            attempts++;
+        } while (distance < 50 && attempts < 10);
 
         // Apply style
         btn.style.position = 'absolute';
-        btn.style.left = randomLeft + 'px';
-        btn.style.top = randomTop + 'px';
+        btn.style.left = newLeft + 'px';
+        btn.style.top = newTop + 'px';
 
-        // Reset transform if any (remove centering hacks if they existed)
         btn.style.transform = 'none';
         btn.style.margin = '0';
+
+        // Make YES button grow bigger each time NO escapes
+        const currentScale = parseFloat(yesBtn.getAttribute('data-scale')) || 1;
+        const newScale = currentScale + 0.1; // Grow by 10%
+        yesBtn.style.transform = `scale(${newScale})`;
+        yesBtn.setAttribute('data-scale', newScale);
     },
 
     acceptProposal() {
