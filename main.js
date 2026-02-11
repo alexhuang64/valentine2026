@@ -337,9 +337,11 @@ function sendEmail() {
 createParticles();
 AudioController.init(); // Initialize audio context and interaction listeners immediately
 
-// Add event listeners for No button
+// Add event listeners for buttons
 document.addEventListener('DOMContentLoaded', () => {
     const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+
     if (noBtn) {
         // Desktop: mouseover
         noBtn.addEventListener('mouseover', (e) => {
@@ -355,6 +357,14 @@ document.addEventListener('DOMContentLoaded', () => {
         noBtn.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
+        });
+    }
+
+    if (yesBtn) {
+        // Handle YES button clicks
+        yesBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            UI.acceptProposal();
         });
     }
 });
