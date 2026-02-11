@@ -125,18 +125,40 @@ const UI = {
         AudioController.playPop();
         const btn = document.getElementById('noBtn');
         const phrases = [
-            "No 😢", "Are you sure?", "Really?", "Think again!",
-            "Don't break my heart 💔", "Please? 🥺", "Last chance!",
-            "You can't say no!", "But I love you! ❤️"
+            "No 😢",
+            "Are you sure?",
+            "Really?",
+            "Think again!",
+            "Don't break my heart 💔",
+            "Please? 🥺",
+            "Last chance!",
+            "You can't say no!",
+            "I'll give you cookies 🍪",
+            "But I love you! ❤️",
+            "Still NO? 😭",
+            "Okay, I'll cry...",
+            "Just click YES!",
+            "Năn nỉ mà...",
+            "Thôi màaaaaa",
+            "Đừng phũ phàng thế chứ!",
+            "Em không thương anh à?",
+            "Bấm YES đi mòa 💖"
         ];
 
-        const x = Math.max(10, Math.min(Math.random() * (window.innerWidth - 150), window.innerWidth - 150));
+        // Random Position (Erratic)
+        const x = Math.max(10, Math.min(Math.random() * (window.innerWidth - 120), window.innerWidth - 120));
         const y = Math.max(10, Math.min(Math.random() * (window.innerHeight - 50), window.innerHeight - 50));
 
         btn.style.position = 'fixed';
         btn.style.left = x + 'px';
         btn.style.top = y + 'px';
+
+        // Change text randomly (to avoid repetition)
         btn.innerText = phrases[Math.floor(Math.random() * phrases.length)];
+
+        // Make the button slightly smaller each time (Troll logic)
+        // const currentScale = btn.style.transform ? parseFloat(btn.style.transform.replace('scale(', '')) : 1;
+        // btn.style.transform = `scale(${Math.max(0.5, currentScale - 0.05)})`;
     },
 
     acceptProposal() {
