@@ -108,6 +108,8 @@ const AudioController = {
 
 /* --- UI CONTROLLER --- */
 const UI = {
+    noDodgeCount: 0, // Track NO button clicks
+
     nextScreen(targetId) {
         AudioController.playSwoosh();
 
@@ -123,6 +125,15 @@ const UI = {
         if (targetId === 'screen-letter') {
             Typewriter.start();
         }
+        if (targetId === 'screen-proposal') {
+            // Reset counter and disable YES when entering proposal screen
+            this.noDodgeCount = 0;
+            const yesBtn = document.getElementById('yesBtn');
+            yesBtn.disabled = true;
+            yesBtn.style.opacity = '0.3';
+            yesBtn.style.cursor = 'not-allowed';
+            yesBtn.innerText = 'YES! 😍 (Try NO first)';
+        }
     },
 
 
@@ -137,6 +148,9 @@ const UI = {
         const btn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
         const container = document.getElementById('screen-proposal');
+
+        // Increment dodge counter
+        this.noDodgeCount++;
 
         // Move button to container if not already there
         if (btn.parentNode !== container) {
@@ -203,13 +217,33 @@ const UI = {
         btn.style.margin = '0';
 
         // Make YES button grow bigger each time NO escapes
-        const currentScale = parseFloat(yesBtn.getAttribute('data-scale')) || 1;
+        const currentScale = parseFloat(yesBtn.getAttribute('data-scale')) || 0.5;
         const newScale = currentScale + 0.1; // Grow by 10%
         yesBtn.style.transform = `scale(${newScale})`;
         yesBtn.setAttribute('data-scale', newScale);
+
+        // After 3 dodges, enable YES button
+        if (this.noDodgeCount >= 3) {
+            yesBtn.disabled = false;
+            yesBtn.style.opacity = '1';
+            yesBtn.style.cursor = 'pointer';
+            yesBtn.innerText = 'YES! 😍';
+            yesBtn.style.animation = 'glow 1s ease-in-out infinite';
+
+            // Play success sound
+            AudioController.playSuccess();
+        }
     },
 
     acceptProposal() {
+        const yesBtn = document.getElementById('yesBtn');
+        // Check if YES button is enabled
+        if (yesBtn.disabled) {
+            AudioController.playPop();
+            alert('Hãy thử bấm nút NO trước đã nhé! 😊');
+            return;
+        }
+
         AudioController.playSuccess();
         this.nextScreen('screen-celebration');
         createConfetti();
