@@ -145,24 +145,53 @@ const UI = {
             "Bấm YES đi mòa 💖"
         ];
 
-        // Calculate limits to stay within screen (with 50px padding)
-        const maxX = window.innerWidth - btn.offsetWidth - 50;
-        const maxY = window.innerHeight - btn.offsetHeight - 50;
-
-        // Ensure button stays on screen even if window serves odd sizes
-        const randomX = Math.max(20, Math.random() * maxX);
-        const randomY = Math.max(20, Math.random() * maxY);
-
-        btn.style.position = 'fixed';
-        btn.style.left = randomX + 'px';
-        btn.style.top = randomY + 'px';
-
-        // Change text randomly (to avoid repetition)
+        // 1. Change text first to determine new size
         btn.innerText = phrases[Math.floor(Math.random() * phrases.length)];
 
-        // Make the button slightly smaller each time (Troll logic)
-        // const currentScale = btn.style.transform ? parseFloat(btn.style.transform.replace('scale(', '')) : 1;
-        // btn.style.transform = `scale(${Math.max(0.5, currentScale - 0.05)})`;
+        // 2. Get dimensions & viewport info
+        const btnRect = btn.getBoundingClientRect();
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+
+        const btnWidth = btnRect.width;
+        const btnHeight = btnRect.height;
+
+        // 3. Define Safe Area (Padding from edges)
+        const padding = 30; // Keep at least 30px from edges
+        const minX = padding;
+        const maxX = w - btnWidth - padding;
+        const minY = padding;
+        const maxY = h - btnHeight - padding;
+
+        // 4. Get Current Position
+        // Check if inline style is set (after first jump), otherwise use bounding rect
+        let currentX = parseFloat(btn.style.left);
+        let currentY = parseFloat(btn.style.top);
+        if (isNaN(currentX)) currentX = btnRect.left;
+        if (isNaN(currentY)) currentY = btnRect.top;
+
+        // 5. Calculate constrained random jump
+        const maxJump = 200; // Max jump distance in pixels (keeps it "chaseable")
+
+        // Random direction +/- maxJump
+        let dx = (Math.random() - 0.5) * 2 * maxJump;
+        let dy = (Math.random() - 0.5) * 2 * maxJump;
+
+        // Ensure minimum jump to actually "dodge" mouse
+        if (Math.abs(dx) < 60) dx = (dx > 0 ? 60 : -60);
+        if (Math.abs(dy) < 60) dy = (dy > 0 ? 60 : -60);
+
+        let newX = currentX + dx;
+        let newY = currentY + dy;
+
+        // 6. Clamp to screen boundaries (CRITICAL FIX)
+        newX = Math.min(Math.max(newX, minX), maxX);
+        newY = Math.min(Math.max(newY, minY), maxY);
+
+        // 7. Apply new position
+        btn.style.position = 'fixed';
+        btn.style.left = newX + 'px';
+        btn.style.top = newY + 'px';
     },
 
     acceptProposal() {
