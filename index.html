@@ -275,27 +275,46 @@
     <div class="container" id="screen-gallery">
         <h1>Our Memories 📸</h1>
         <p>Every moment with you is a treasure.</p>
-        <div class="gallery-grid">
-            <!-- Local Images -->
-            <div class="photo-card" onclick="playClickSound()">
-                <img src="anh1.jpg" alt="Kỷ niệm 1"
-                    onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1544124339-42b6b553e162?w=500&q=80'">
-            </div>
-            <div class="photo-card" onclick="playClickSound()">
-                <img src="anh2.jpg" alt="Kỷ niệm 2"
-                    onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500&q=80'">
-            </div>
-            <div class="photo-card" onclick="playClickSound()">
-                <img src="anh3.jpg" alt="Kỷ niệm 3"
-                    onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=500&q=80'">
-            </div>
-            <div class="photo-card" onclick="playClickSound()">
-                <img src="anh4.jpg" alt="Kỷ niệm 4"
-                    onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1520854221256-17451cc330e7?w=500&q=80'">
-            </div>
+        <div class="gallery-grid" id="gallery-container">
+            <!-- Images will be loaded via JS to handle extension fallback -->
         </div>
         <button class="btn" onclick="nextScreen('screen-letter')">Next -></button>
     </div>
+
+    <!-- Script to auto-detect image extensions -->
+    <script>
+        const imageBaseNames = ['anh1', 'anh2', 'anh3', 'anh4'];
+        const extensions = ['.jpg', '.JPG', '.jpeg', '.JPEG', '.png', '.PNG'];
+        const fallbackUrl = 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500&q=80';
+
+        const galleryContainer = document.getElementById('gallery-container');
+
+        imageBaseNames.forEach((name, index) => {
+            const card = document.createElement('div');
+            card.className = 'photo-card';
+            card.onclick = window.playClickSound; // Use global function
+
+            const img = document.createElement('img');
+            img.alt = `Kỷ niệm ${index + 1}`;
+
+            // Try loading extensions recursively
+            let extIndex = 0;
+            function tryNextExtension() {
+                if (extIndex < extensions.length) {
+                    img.src = name + extensions[extIndex];
+                    extIndex++;
+                } else {
+                    img.src = fallbackUrl; // Give up -> Use online fallback
+                }
+            }
+
+            img.onerror = tryNextExtension; // If error -> Try next ext
+            tryNextExtension(); // Start try 1
+
+            card.appendChild(img);
+            galleryContainer.appendChild(card);
+        });
+    </script>
 
     <!-- Screen 3: Letter -->
     <div class="container" id="screen-letter">
