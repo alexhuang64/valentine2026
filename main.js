@@ -124,6 +124,8 @@ const UI = {
     dodgeButton() {
         AudioController.playPop();
         const btn = document.getElementById('noBtn');
+        const container = document.getElementById('screen-proposal');
+
         const phrases = [
             "No 😢",
             "Are you sure?",
@@ -145,53 +147,33 @@ const UI = {
             "Bấm YES đi mòa 💖"
         ];
 
-        // 1. Change text first to determine new size
+        // 1. Change text
         btn.innerText = phrases[Math.floor(Math.random() * phrases.length)];
 
-        // 2. Get dimensions & viewport info
+        // 2. Get dimensions
         const btnRect = btn.getBoundingClientRect();
-        const w = window.innerWidth;
-        const h = window.innerHeight;
+        const containerRect = container.getBoundingClientRect();
 
         const btnWidth = btnRect.width;
         const btnHeight = btnRect.height;
 
-        // 3. Define Safe Area (Padding from edges)
-        const padding = 30; // Keep at least 30px from edges
-        const minX = padding;
-        const maxX = w - btnWidth - padding;
-        const minY = padding;
-        const maxY = h - btnHeight - padding;
+        // 3. Define Constraints within the Container
+        // Use container's position as the boundaries
+        const padding = 20; // Internal padding
 
-        // 4. Get Current Position
-        // Check if inline style is set (after first jump), otherwise use bounding rect
-        let currentX = parseFloat(btn.style.left);
-        let currentY = parseFloat(btn.style.top);
-        if (isNaN(currentX)) currentX = btnRect.left;
-        if (isNaN(currentY)) currentY = btnRect.top;
+        const minX = containerRect.left + padding;
+        const maxX = containerRect.right - btnWidth - padding;
+        const minY = containerRect.top + padding;
+        const maxY = containerRect.bottom - btnHeight - padding;
 
-        // 5. Calculate constrained random jump
-        const maxJump = 200; // Max jump distance in pixels (keeps it "chaseable")
+        // 4. Calculate Random Position strictly within these bounds
+        const randomX = Math.random() * (maxX - minX) + minX;
+        const randomY = Math.random() * (maxY - minY) + minY;
 
-        // Random direction +/- maxJump
-        let dx = (Math.random() - 0.5) * 2 * maxJump;
-        let dy = (Math.random() - 0.5) * 2 * maxJump;
-
-        // Ensure minimum jump to actually "dodge" mouse
-        if (Math.abs(dx) < 60) dx = (dx > 0 ? 60 : -60);
-        if (Math.abs(dy) < 60) dy = (dy > 0 ? 60 : -60);
-
-        let newX = currentX + dx;
-        let newY = currentY + dy;
-
-        // 6. Clamp to screen boundaries (CRITICAL FIX)
-        newX = Math.min(Math.max(newX, minX), maxX);
-        newY = Math.min(Math.max(newY, minY), maxY);
-
-        // 7. Apply new position
-        btn.style.position = 'fixed';
-        btn.style.left = newX + 'px';
-        btn.style.top = newY + 'px';
+        // 5. Apply new position
+        btn.style.position = 'fixed'; // Keep fixed to ignore flow, but positioned visually inside container
+        btn.style.left = randomX + 'px';
+        btn.style.top = randomY + 'px';
     },
 
     acceptProposal() {
