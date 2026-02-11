@@ -126,13 +126,10 @@ const UI = {
             Typewriter.start();
         }
         if (targetId === 'screen-proposal') {
-            // Reset counter and mark YES as not enabled
+            // Reset counter and mark YES as not enabled (but keep normal appearance)
             this.noDodgeCount = 0;
             const yesBtn = document.getElementById('yesBtn');
             yesBtn.setAttribute('data-enabled', 'false');
-            yesBtn.style.opacity = '0.3';
-            yesBtn.style.cursor = 'not-allowed';
-            yesBtn.style.pointerEvents = 'auto'; // Keep clickable for event listener
             yesBtn.innerText = 'YES! 😍';
         }
     },
@@ -223,12 +220,9 @@ const UI = {
         yesBtn.style.transform = `scale(${newScale})`;
         yesBtn.setAttribute('data-scale', newScale);
 
-        // After 3 dodges, enable YES button
+        // After 3 dodges, enable YES button with glow effect
         if (this.noDodgeCount >= 3) {
             yesBtn.setAttribute('data-enabled', 'true');
-            yesBtn.style.opacity = '1';
-            yesBtn.style.cursor = 'pointer';
-            yesBtn.innerText = 'YES! 😍';
             yesBtn.style.animation = 'glow 1s ease-in-out infinite';
 
             // Play success sound
