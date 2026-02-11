@@ -126,12 +126,13 @@ const UI = {
             Typewriter.start();
         }
         if (targetId === 'screen-proposal') {
-            // Reset counter and disable YES when entering proposal screen
+            // Reset counter and mark YES as not enabled
             this.noDodgeCount = 0;
             const yesBtn = document.getElementById('yesBtn');
-            yesBtn.disabled = true;
+            yesBtn.setAttribute('data-enabled', 'false');
             yesBtn.style.opacity = '0.3';
             yesBtn.style.cursor = 'not-allowed';
+            yesBtn.style.pointerEvents = 'auto'; // Keep clickable for event listener
             yesBtn.innerText = 'YES! 😍 (Try NO first)';
         }
     },
@@ -224,7 +225,7 @@ const UI = {
 
         // After 3 dodges, enable YES button
         if (this.noDodgeCount >= 3) {
-            yesBtn.disabled = false;
+            yesBtn.setAttribute('data-enabled', 'true');
             yesBtn.style.opacity = '1';
             yesBtn.style.cursor = 'pointer';
             yesBtn.innerText = 'YES! 😍';
@@ -237,8 +238,8 @@ const UI = {
 
     acceptProposal() {
         const yesBtn = document.getElementById('yesBtn');
-        // Check if YES button is enabled
-        if (yesBtn.disabled) {
+        // Check if YES button is enabled using data attribute
+        if (yesBtn.getAttribute('data-enabled') !== 'true') {
             AudioController.playPop();
             alert('Hãy thử bấm nút NO trước đã nhé! 😊');
             return;
