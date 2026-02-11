@@ -231,7 +231,8 @@
 
             /* Scrollable letter content */
             max-height: 400px;
-            overflow-y: scroll;
+            overflow-y: scroll !important;
+            /* Force scrollbar */
             -webkit-overflow-scrolling: touch;
             position: relative;
         }
@@ -257,31 +258,24 @@
             background: linear-gradient(180deg, #ff85ad, #d95b8a);
         }
 
-        /* Gradient hint at bottom to show more content */
-        .letter-content::after {
-            content: '';
-            position: sticky;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 40px;
-            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9));
-            pointer-events: none;
-            display: block;
-        }
+
 
         @media (max-width: 600px) {
             .letter-content {
-                font-size: 1.2rem;
-                padding: 15px;
-                max-height: 300px;
-                /* Smaller on mobile to ensure scrolling */
-                line-height: 1.5;
+                font-size: 1.15rem;
+                padding: 20px;
+                max-height: 500px;
+                /* Fit iPhone 11 Pro screen */
+                line-height: 1.6;
             }
 
-            /* Wider scrollbar on mobile for easier visibility */
+            /* SUPER WIDE scrollbar on mobile */
             .letter-content::-webkit-scrollbar {
-                width: 12px;
+                width: 18px;
+            }
+
+            .letter-content::-webkit-scrollbar-track {
+                background: rgba(100, 100, 100, 0.7);
             }
         }
 
