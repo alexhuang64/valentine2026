@@ -480,15 +480,20 @@ Như Ý à, be my valentine ?...`;
         createParticles();
 
         // Screen Navigation
+        // Screen Navigation
         function nextScreen(targetId) {
             playSwooshSound();
+
+            // 1. Change Screen FIRST (Critical for UX)
             document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
             const target = document.getElementById(targetId);
             target.classList.add('active');
 
-            // Play music automatically when user enters the gallery (first interaction)
+            // 2. Then try to play music (Async - won't block screen)
             if (targetId === 'screen-gallery') {
-                playMusic();
+                setTimeout(() => {
+                    playMusic();
+                }, 500);
             }
             if (targetId === 'screen-letter') {
                 startTypewriter();
